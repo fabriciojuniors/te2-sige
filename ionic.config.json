@@ -1,0 +1,7 @@
+{
+  "name": "SIGE",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
