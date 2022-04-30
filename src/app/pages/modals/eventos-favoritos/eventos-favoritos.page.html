@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Favoritos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let evento of favoritos">
+      <ion-thumbnail slot="start">
+        <img [src]="evento.imagem">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{evento.nome}}</h2>
+        <p>{{evento.data_hora | date:'dd/MM/yyyy HH:mm'}}</p>
+      </ion-label>
+      <ion-button slot="end" fill="clear" (click)="removeFavorito(evento)">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

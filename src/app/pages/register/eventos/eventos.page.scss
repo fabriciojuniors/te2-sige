@@ -1,0 +1,27 @@
+ion-modal {
+    --width: 290px;
+    --height: 382px;
+    --border-radius: 8px;
+}
+
+ion-modal ion-datetime {
+    height: 382px;
+}
+
+ion-datetime {
+    height: auto;
+    width: auto;
+
+    max-width: 350px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(288px, 1fr));
+    grid-gap: 0 10px;
+}
+
+:root {
+    --ion-safe-area-top: 20px;
+    --ion-safe-area-bottom: 22px;
+  }

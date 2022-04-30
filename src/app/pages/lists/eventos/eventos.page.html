@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Listagem de eventos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="this.favoritosService.openFavoritos()">
+        <ion-icon name="star" color="warning"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-card>
+    <ion-accordion-group>
+      <ion-accordion *ngFor="let evento of eventos">
+        <ion-item slot="header">
+          <ion-label> {{evento.nome}} </ion-label>
+        </ion-item>
+        <div slot="content" style="padding-right: 15px; padding-left: 15px">
+          <img [src]="evento.imagem" [alt]="evento.nome">
+
+          <p> {{evento.descricao}} </p>
+          <p><strong>Data: </strong> {{evento.data_hora | date:'dd/MM/yyyy HH:mm'}}</p>
+          <p><strong>Local: </strong> {{getLocalEvento(evento.local).nome}}</p>
+          <p><strong>Parceiro: </strong> {{getParceiroEvento(evento.parceiro).nomeFantasia}}</p>
+          <p><strong>Classificação indicativa: </strong> {{evento.classificacao | classificacaoIndicativa}}</p>
+
+          <ion-item>
+            <ion-buttons slot="end">
+              <ion-button (click)="excluir(evento)" color="primary">
+                <ion-icon name="trash" style="font-size: 22px;"></ion-icon>
+              </ion-button>
+              <ion-button (click)="addFavorito(evento)">
+                <ion-icon name="star" [color]=" isFavorito(evento) ? 'warning' : '' "></ion-icon>
+              </ion-button>
+              <ion-button [routerLink]="['/register/eventos/', evento.id]" color="primary">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+</ion-content>

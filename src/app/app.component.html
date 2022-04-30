@@ -3,24 +3,51 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
-
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
+          <ion-list-header style="margin-bottom: 20px;">
+            <ion-label>SIGE</ion-label>
+          </ion-list-header>
+          <ion-item lines="none" (click)="acessar('dashboard')" [routerLink]="['/dashboard']" routerLinkActive="selected" >
+            <ion-icon slot="start" name="document-text-outline"></ion-icon>
+            <ion-label>Dashboard</ion-label>
           </ion-item>
+          <ion-accordion-group>
+            <ion-accordion value="cadastros">
+              <ion-item slot="header" lines="none">
+                <ion-icon slot="start" name="add-outline"></ion-icon>
+                <ion-label>Cadastros</ion-label>
+              </ion-item>
+
+              <div slot="content">
+                <ion-item lines="none" (click)="acessar('register/eventos')" [routerLink]="['/register/eventos']" routerLinkActive="selected">
+                  <ion-label>Eventos</ion-label>
+                </ion-item>
+                <ion-item lines="none" (click)="acessar('register/locais')" [routerLink]="['/register/locais']" routerLinkActive="selected">
+                  <ion-label>Locais</ion-label>
+                </ion-item>
+                <ion-item lines="none" (click)="acessar('register/parceiro')" [routerLink]="['/register/parceiro']" routerLinkActive="selected">
+                  <ion-label>Parceiros</ion-label>
+                </ion-item>
+              </div>
+            </ion-accordion>
+            <ion-accordion value="consultas">
+              <ion-item slot="header">
+                <ion-icon slot="start" name="list-outline"></ion-icon>
+                <ion-label>Consultas</ion-label>
+              </ion-item>
+
+              <div slot="content">
+                <ion-item lines="none"  (click)="acessar('list/eventos')" [routerLink]="['/list/eventos']" routerLinkActive="selected">
+                  <ion-label>Eventos</ion-label>
+                </ion-item>
+                <ion-item lines="none" (click)="acessar('list/locais')" [routerLink]="['/list/locais']" routerLinkActive="selected">
+                  <ion-label>Locais</ion-label>
+                </ion-item>
+                <ion-item lines="none" (click)="acessar('list/parceiro')" [routerLink]="['/list/parceiro']" routerLinkActive="selected">
+                  <ion-label>Parceiros</ion-label>
+                </ion-item>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
         </ion-list>
       </ion-content>
     </ion-menu>
