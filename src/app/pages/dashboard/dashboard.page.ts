@@ -4,6 +4,7 @@ import { CarregamentoService } from 'src/app/services/carregamento.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { FavoritosService } from 'src/app/services/favoritos.service';
 import { LocaisService } from 'src/app/services/locais.service';
+import { MensagemService } from 'src/app/services/mensagem.service';
 import { ParceirosService } from 'src/app/services/parceiros.service';
 
 Chart.register(...registerables);
@@ -35,7 +36,8 @@ export class DashboardPage implements OnInit {
     private locaisService: LocaisService,
     public favoritosService: FavoritosService,
     private eventoService: EventosService,
-    private carregamento: CarregamentoService) { }
+    private carregamento: CarregamentoService,
+    private mensagem: MensagemService) { }
 
   async ngOnInit() {
     this.carregamento.showLoading("Gerando gráficos");
@@ -124,7 +126,10 @@ export class DashboardPage implements OnInit {
 
         this.carregamento.dismiss();
       });
-    });
+    }, () => { 
+      this.carregamento.dismiss();
+      this.mensagem.showToast("Erro ao carregar gráficos", "danger");
+     });
   }
 
   getRandomColor(grafico) {
