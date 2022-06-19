@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { CarregamentoService } from 'src/app/services/carregamento.service';
+import { DashboardService } from 'src/app/services/dashboard.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { FavoritosService } from 'src/app/services/favoritos.service';
 import { LocaisService } from 'src/app/services/locais.service';
@@ -33,10 +34,9 @@ export class DashboardPage implements OnInit {
   grafico2: any;
 
   constructor(private parceiroService: ParceirosService,
-    private locaisService: LocaisService,
     public favoritosService: FavoritosService,
-    private eventoService: EventosService,
     private carregamento: CarregamentoService,
+    private dashboard: DashboardService,
     private mensagem: MensagemService) { }
 
   async ngOnInit() {
@@ -60,22 +60,18 @@ export class DashboardPage implements OnInit {
   }
 
   async getGrafico1() {
-    this.parceiroService.findAll().subscribe(async response => {
-      this.parceiros = response;
-      response.forEach(parceiro => {
-        this.labelParceiros.push(parceiro.nomeFantasia.split(" ")[0])
+    this.dashboard.findByParceiro().subscribe(dados => {
+      let labels = [];
+      this.dadosGrafico1 = []
+      dados.forEach(d => {
         this.getRandomColor(1);
+        labels.push(d.parceiro);
+        this.dadosGrafico1.push(d.quantidade);
       });
-      let dados1 = [];
-      this.eventoService.findAll().subscribe(response => {
-        this.parceiros.forEach(parceiro => {
-          dados1.push(response.filter(evento => evento.parceiro == parceiro.id).length);
-        })
 
-        this.dadosGrafico1 = dados1;
-        const ctx = <HTMLCanvasElement>document.getElementById('grafico1');
+      const ctx = <HTMLCanvasElement>document.getElementById('grafico1');
         const chartData = {
-          labels: this.labelParceiros,
+          labels: labels,
           datasets: [{
             label: 'Parceiros X Qtd de Eventos',
             data: this.dadosGrafico1,
@@ -90,47 +86,78 @@ export class DashboardPage implements OnInit {
           data: chartData
         });
 
-      });
+        setTimeout(() => this.carregamento.dismiss(), 500);
     });
   }
 
-  getGrafico2() {
-    this.locaisService.findAll().subscribe(response => {
-      this.locais = response;
-      response.forEach(local => {
-        this.labelLocais.push(local.nome)
+  async getGrafico2() {
+    this.dashboard.findByLocal().subscribe(dados => {
+      let labels = []
+      this.dadosGrafico2 = [];
+      dados.forEach(d => {
         this.getRandomColor(2);
+        labels.push(d.local);
+        this.dadosGrafico2.push(d.quantidade);
       });
-      let dados2 = [];
-      this.eventoService.findAll().subscribe(response => {
-        this.locais.forEach(local => {
-          dados2.push(response.filter(evento => evento.local == local.id).length);
-        });
-        this.dadosGrafico2 = dados2;
-        const ctx = <HTMLCanvasElement>document.getElementById('grafico2');
-        const chartData = {
-          labels: this.labelLocais,
-          datasets: [{
-            label: 'Locais X Qtd de Eventos',
-            data: this.dadosGrafico2,
-            backgroundColor: this.backgroundColorGrafico2,
-            borderColor: this.borderColorGrafico2,
-            borderWidth: 1
-          }]
-        };
 
-        this.grafico2 = new Chart(ctx.getContext('2d'), {
-          type: 'doughnut',
-          data: chartData
-        });
+      const ctx = <HTMLCanvasElement>document.getElementById('grafico2');
+      const chartData = {
+        labels: labels,
+        datasets: [{
+          label: 'Locais X Qtd de Eventos',
+          data: this.dadosGrafico2,
+          backgroundColor: this.backgroundColorGrafico2,
+          borderColor: this.borderColorGrafico2,
+          borderWidth: 1
+        }]
+      };
 
-        this.carregamento.dismiss();
+      this.grafico2 = new Chart(ctx.getContext('2d'), {
+        type: 'doughnut',
+        data: chartData
       });
-    }, () => { 
-      this.carregamento.dismiss();
-      this.mensagem.showToast("Erro ao carregar gráficos", "danger");
-     });
+
+      setTimeout(() => this.carregamento.dismiss(), 500);
+    });
   }
+
+  // getGrafico2() {
+  //   this.locaisService.findAll().subscribe(response => {
+  //     this.locais = response;
+  //     response.forEach(local => {
+  //       this.labelLocais.push(local.nome)
+  //       this.getRandomColor(2);
+  //     });
+  //     let dados2 = [];
+  //     this.eventoService.findAll().subscribe(response => {
+  //       this.locais.forEach(local => {
+  //         dados2.push(response.filter(evento => evento.local == local.id).length);
+  //       });
+  //       this.dadosGrafico2 = dados2;
+  //       const ctx = <HTMLCanvasElement>document.getElementById('grafico2');
+  //       const chartData = {
+  //         labels: this.labelLocais,
+  //         datasets: [{
+  //           label: 'Locais X Qtd de Eventos',
+  //           data: this.dadosGrafico2,
+  //           backgroundColor: this.backgroundColorGrafico2,
+  //           borderColor: this.borderColorGrafico2,
+  //           borderWidth: 1
+  //         }]
+  //       };
+
+  //       this.grafico2 = new Chart(ctx.getContext('2d'), {
+  //         type: 'doughnut',
+  //         data: chartData
+  //       });
+
+  //       this.carregamento.dismiss();
+  //     });
+  //   }, () => { 
+  //     this.carregamento.dismiss();
+  //     this.mensagem.showToast("Erro ao carregar gráficos", "danger");
+  //    });
+  // }
 
   getRandomColor(grafico) {
     var num = Math.round(0xffffff * Math.random());

@@ -40,7 +40,6 @@
                   clearText="Limpar"
                   doneText="Concluir"
                   showDefaultButtons="true"
-                  [min]="hoje.toISOString()"
                   ></ion-datetime>
                 </ion-content>
               </ng-template>
@@ -64,7 +63,7 @@
           <ion-item>
             <ion-label position="floating">Status</ion-label>
             <ion-select formControlName="status" interface="action-sheet" cancelText="Cancelar">
-              <ion-select-option value="PENDENTES">Pendente</ion-select-option>
+              <ion-select-option value="PENDENTE">Pendente</ion-select-option>
               <ion-select-option value="APROVADO">Aprovada realização</ion-select-option>
               <ion-select-option value="REPROVADO">Reprovada realização</ion-select-option>
               <ion-select-option value="FINALIZADO">Finalizado</ion-select-option>              

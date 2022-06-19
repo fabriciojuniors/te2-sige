@@ -25,13 +25,13 @@ export class LocaisPage implements OnInit, ViewWillEnter {
     public favoritosService: FavoritosService) { }
 
   ionViewWillEnter(): void {
-    this.findAll();    
+    this.findAll();
   }
 
   ngOnInit() {
 
   }
-  
+
   async findAll() {
     this.carregamento.showLoading();
     await this.locaisService.findAll().subscribe(
@@ -43,7 +43,7 @@ export class LocaisPage implements OnInit, ViewWillEnter {
       () => {
         this.carregamento.dismiss();
         this.isLoading = false;
-        this.mensagem.showToast('Erro ao buscar locais!', 'danger', () => {this.findAll()}, true);
+        this.mensagem.showToast('Erro ao buscar locais!', 'danger', () => { this.findAll() }, true);
       }
     );
   }
@@ -59,7 +59,7 @@ export class LocaisPage implements OnInit, ViewWillEnter {
         () => {
           this.mensagem.showToast('Local excluído com sucesso!', 'success', () => { }, false);
           this.findAll();
-          this.carregamento.dismiss();
+          setTimeout(() => this.carregamento.dismiss(), 500);
           this.isLoading = false;
         },
         () => {

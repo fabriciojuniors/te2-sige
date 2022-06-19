@@ -34,16 +34,16 @@ export class ParceiroPage implements OnInit {
 
   ngOnInit() {
     this.cadastro = this.formBuild.group({
-      ['id']: [''],
+      ['id']: ['0'],
       ['nomeFantasia']: ['', [Validators.required, Validators.minLength(3)]],
       ['razaoSocial']: ['', [Validators.required, Validators.minLength(3)]],
       ['cnpj']: ['', [Validators.required, Validators.minLength(18)]],
       ['telefone']: ['', [Validators.required, Validators.minLength(8)]],
       ['email']: ['', [Validators.required, Validators.email]],
       ['endereco']: this.formBuild.group({
-        ['id']: [''],
+        ['id']: ['0'],
         ['logradouro']: ['', [Validators.required, Validators.minLength(3)]],
-        ['numero']: [''],
+        ['numero']: ['0'],
         ['complemento']: [''],
         ['bairro']: ['', [Validators.required, Validators.minLength(3)]],
         ['cidade']: ['', [Validators.required, Validators.minLength(3)]],
@@ -86,11 +86,11 @@ export class ParceiroPage implements OnInit {
       this.parceirosService.save(this.cadastro.value).subscribe(() => {
         this.mensagem.showToast('Parceiro salvo com sucesso!');
         this.cadastro.reset();
-        this.carregamento.dismiss();
+        setTimeout(() => this.carregamento.dismiss(), 500);
         this.router.navigateByUrl("/list/parceiro");
       },
-        () => {
-          this.mensagem.showToast('Erro ao salvar parceiro!', 'danger', () => {this.salvar()}, true);
+        (error) => {
+          this.mensagem.showToast(` ${error.error.mensagem ?? 'Erro ao salvar parceiro!'} `, 'danger', () => {this.salvar()}, true);
           this.carregamento.dismiss();
         });
     } else {

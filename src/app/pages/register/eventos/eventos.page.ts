@@ -22,18 +22,18 @@ export class EventosPage implements OnInit, ViewWillEnter {
 
   cadastro: FormGroup;
   hoje = new Date();
-  locais:Local[] = [];
-  parceiros:Parceiro[] = [];
+  locais: Local[] = [];
+  parceiros: Parceiro[] = [];
 
   constructor(public favoritosService: FavoritosService,
-              private formBuilder: FormBuilder, 
-              private localService: LocaisService,
-              private parceiroService: ParceirosService,
-              private eventoService: EventosService,
-              private mensagem: MensagemService,
-              private carregamento: CarregamentoService,
-              private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+    private formBuilder: FormBuilder,
+    private localService: LocaisService,
+    private parceiroService: ParceirosService,
+    private eventoService: EventosService,
+    private mensagem: MensagemService,
+    private carregamento: CarregamentoService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
   ionViewWillEnter(): void {
     this.getLocais();
@@ -44,8 +44,15 @@ export class EventosPage implements OnInit, ViewWillEnter {
     if (id) {
       this.carregamento.showLoading()
       this.eventoService.findById(id).subscribe(
-        (evento) => {          
-          this.cadastro.patchValue(evento);
+        (evento) => {
+          let dados = {
+            ...evento,
+            local: evento.local.id,
+            parceiro: evento.local.id
+          }
+
+          this.cadastro.patchValue(dados);
+
           setTimeout(() => {
             this.carregamento.dismiss();
           }, 100);
@@ -55,30 +62,30 @@ export class EventosPage implements OnInit, ViewWillEnter {
           this.carregamento.dismiss();
         }
       );
-      
+
     }
   }
 
   ngOnInit() {
 
     this.cadastro = this.formBuilder.group({
-      ['id']: [''],
+      ['id']: ['0'],
       ['nome']: ['', [Validators.required, Validators.minLength(3)]],
       ['descricao']: ['', [Validators.required, Validators.minLength(3)]],
       ['data_hora']: ['', [Validators.required]],
-      ['local']: ['', [Validators.required]],
+      ['local']: [[''], [Validators.required]],
       ['parceiro']: ['', [Validators.required]],
       ['status']: ['', [Validators.required]],
       ['classificacao']: ['', [Validators.required]],
       ['imagem']: ['', []]
     });
 
-  }  
+  }
 
-  getLocais(){
+  getLocais() {
     this.localService.findAll().subscribe(
       (local) => {
-        this.locais = local;      
+        this.locais = local;
       },
       () => {
         this.mensagem.showToast('Erro ao salvar local!', 'danger', () => { this.getLocais() }, true);
@@ -86,10 +93,10 @@ export class EventosPage implements OnInit, ViewWillEnter {
     );
   }
 
-  getParceiros(){
+  getParceiros() {
     this.parceiroService.findAll().subscribe(
       (parceiro) => {
-        this.parceiros = parceiro;      
+        this.parceiros = parceiro;
       },
       () => {
         this.mensagem.showToast('Erro ao salvar parceiro!', 'danger', () => { this.getParceiros() }, true);
@@ -106,15 +113,25 @@ export class EventosPage implements OnInit, ViewWillEnter {
   salvar() {
     this.carregamento.showLoading("Salvando dados...");
     if (this.cadastro.valid) {
-      this.eventoService.save(this.cadastro.value).subscribe(
+      let formulario = {
+        ...this.cadastro.value,
+        data_hora: this.cadastro.value.data_hora.slice(0,19),
+        local: {
+          id: this.cadastro.value.local
+        },
+        parceiro: {
+          id: this.cadastro.value.parceiro
+        }
+      }
+      this.eventoService.save(formulario).subscribe(
         (evento) => {
           this.mensagem.showToast('Evento salvo com sucesso!');
           this.cadastro.reset();
-          this.carregamento.dismiss();
+          setTimeout(() => this.carregamento.dismiss(), 500);
           this.router.navigateByUrl("/list/eventos");
         },
         (error) => {
-          this.mensagem.showToast('Erro ao salvar evento!', 'danger', () => { this.salvar() }, true);
+          this.mensagem.showToast(`${error.error.mensagem ?? 'Erro ao salvar evento!'}`, 'danger', () => { this.salvar() }, true);
           this.carregamento.dismiss();
         }
       );

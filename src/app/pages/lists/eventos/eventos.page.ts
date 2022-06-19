@@ -30,8 +30,6 @@ export class EventosPage implements OnInit, ViewWillEnter {
     private mensagem: MensagemService) { }
 
   ionViewWillEnter(): void {
-    this.getLocais();
-    this.getParceiros();
     this.getFavoritos();
     this.findAll();
   }
@@ -47,7 +45,7 @@ export class EventosPage implements OnInit, ViewWillEnter {
   async findAll() {
     this.carregamento.showLoading();
     await this.eventoService.findAll().subscribe(
-      (eventos) => {
+      (eventos) => {       
         this.eventos = eventos;
         this.carregamento.dismiss();
       },
@@ -65,7 +63,7 @@ export class EventosPage implements OnInit, ViewWillEnter {
         () => {
           this.mensagem.showToast('Evento excluído com sucesso!', 'success', () => { }, false);
           this.findAll();
-          this.carregamento.dismiss();
+          setTimeout(() => this.carregamento.dismiss(), 500);
         },
         () => {
           this.mensagem.showToast('Erro ao excluir evento!', 'danger');
@@ -73,36 +71,6 @@ export class EventosPage implements OnInit, ViewWillEnter {
         }
       );
     }, () => { });
-  }
-
-  getLocais() {
-    this.localService.findAll().subscribe(
-      (local) => {
-        this.locais = local;
-      },
-      () => {
-        this.mensagem.showToast('Erro ao salvar local!', 'danger', () => { this.getLocais() }, true);
-      }
-    );
-  }
-
-  getParceiros() {
-    this.parceiroService.findAll().subscribe(
-      (parceiro) => {
-        this.parceiros = parceiro;
-      },
-      () => {
-        this.mensagem.showToast('Erro ao salvar parceiro!', 'danger', () => { this.getParceiros() }, true);
-      }
-    );
-  }
-
-  getLocalEvento(id): Local {
-    return this.locais.find(local => local.id == id);
-  }
-
-  getParceiroEvento(id): Parceiro {
-    return this.parceiros.find(parceiro => parceiro.id == id);
   }
 
   addFavorito(evento: Evento) {

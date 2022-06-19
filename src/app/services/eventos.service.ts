@@ -13,20 +13,20 @@ export class EventosService {
 
   save(Evento : Evento): Observable<Evento>{
     if(Evento.id){
-      return this.httpClient.put<Evento>(`${environment.apiUrl}eventos/${Evento.id}`, Evento);
+      return this.httpClient.put<Evento>(`${environment.apiUrl}evento/${Evento.id}`, Evento);
     }
-    return this.httpClient.post<Evento>(`${environment.apiUrl}eventos`, Evento);
+    return this.httpClient.post<Evento>(`${environment.apiUrl}evento`, Evento);
   }
 
   findById(id : string): Observable<Evento>{
-    return this.httpClient.get<Evento>(`${environment.apiUrl}eventos/${id}`);
+    return this.httpClient.get<Evento>(`${environment.apiUrl}evento/${id}`);
   }
 
   findAll(): Observable<Evento[]>{
-    return this.httpClient.get<Evento[]>(`${environment.apiUrl}eventos`);
+    return this.httpClient.get<Evento[]>(`${environment.apiUrl}evento`);
   }
 
   delete(id : number): Observable<void>{
-    return this.httpClient.delete<void>(`${environment.apiUrl}eventos/${id}`);
+    return this.httpClient.delete<void>(`${environment.apiUrl}evento/${id}`);
   }
 }

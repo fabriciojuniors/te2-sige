@@ -61,16 +61,16 @@ export class LocaisPage implements OnInit, ViewWillEnter {
 
   ngOnInit() {
     this.cadastro = this.formBuild.group({
-      id: [''],
+      id: ['0'],
       nome: ['', [Validators.required, Validators.minLength(3)]],
       capacidade: ['', [Validators.required, Validators.min(1)]],
       telefone: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', [Validators.required, Validators.email]],
       foto: [''],
       endereco: this.formBuild.group({
-        id: [''],
+        id: ['0'],
         logradouro: ['', [Validators.required, Validators.minLength(3)]],
-        numero: [''],
+        numero: ['0'],
         complemento: [''],
         bairro: ['', [Validators.required, Validators.minLength(3)]],
         cidade: ['', [Validators.required, Validators.minLength(3)]],
@@ -93,11 +93,11 @@ export class LocaisPage implements OnInit, ViewWillEnter {
         (local) => {
           this.mensagem.showToast('Local salvo com sucesso!');
           this.cadastro.reset();
-          this.carregamento.dismiss();
+          setTimeout(() => this.carregamento.dismiss(), 500);
           this.router.navigateByUrl("/list/locais");
         },
         (error) => {
-          this.mensagem.showToast('Erro ao salvar local!', 'danger', () => { this.salvar() }, true);
+          this.mensagem.showToast(`${error.error.mensagem ?? 'Erro ao salvar local'}`, 'danger', () => { this.salvar() }, true);
           this.carregamento.dismiss();
         }
       );

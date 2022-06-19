@@ -16,6 +16,8 @@ export class CarregamentoService {
   }
 
   dismiss() {
-    return this.loadingCtrl.dismiss();
+    setTimeout(() => {
+      this.loadingCtrl.dismiss();
+    }, 500);
   }
 }

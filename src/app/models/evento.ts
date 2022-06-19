@@ -1,4 +1,4 @@
-import { Local } from "protractor/built/driverProviders";
+import { Local } from "./local";
 import { Parceiro } from "./parceiro";
 
 export interface Evento {

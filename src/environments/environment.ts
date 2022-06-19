@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/',
+  apiUrl: 'http://localhost:8080/sige/api/',
   apiUrlCep: 'https://viacep.com.br/ws/',
   apiUrlCnpj: 'http://www.receitaws.com.br/v1/cnpj/'
 };

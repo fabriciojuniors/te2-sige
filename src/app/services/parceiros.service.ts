@@ -13,20 +13,20 @@ export class ParceirosService {
 
   save(parceiro : Parceiro): Observable<Parceiro>{
     if(parceiro.id){
-      return this.httpClient.put<Parceiro>(`${environment.apiUrl}parceiros/${parceiro.id}`, parceiro);
+      return this.httpClient.put<Parceiro>(`${environment.apiUrl}parceiro/${parceiro.id}`, parceiro);
     }
-    return this.httpClient.post<Parceiro>(`${environment.apiUrl}parceiros`, parceiro);
+    return this.httpClient.post<Parceiro>(`${environment.apiUrl}parceiro`, parceiro);
   }
 
   findById(id : string): Observable<Parceiro>{
-    return this.httpClient.get<Parceiro>(`${environment.apiUrl}parceiros/${id}`);
+    return this.httpClient.get<Parceiro>(`${environment.apiUrl}parceiro/${id}`);
   }
 
   findAll(): Observable<Parceiro[]>{
-    return this.httpClient.get<Parceiro[]>(`${environment.apiUrl}parceiros`);
+    return this.httpClient.get<Parceiro[]>(`${environment.apiUrl}parceiro`);
   }
 
   delete(id : number): Observable<void>{
-    return this.httpClient.delete<void>(`${environment.apiUrl}parceiros/${id}`);
+    return this.httpClient.delete<void>(`${environment.apiUrl}parceiro/${id}`);
   }
 }

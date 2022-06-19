@@ -13,20 +13,20 @@ export class LocaisService {
 
   save(local : Local): Observable<Local>{
     if(local.id){
-      return this.httpClient.put<Local>(`${environment.apiUrl}locais/${local.id}`, local);
+      return this.httpClient.put<Local>(`${environment.apiUrl}local/${local.id}`, local);
     }
-    return this.httpClient.post<Local>(`${environment.apiUrl}locais`, local);
+    return this.httpClient.post<Local>(`${environment.apiUrl}local`, local);
   }
 
   findById(id : string): Observable<Local>{
-    return this.httpClient.get<Local>(`${environment.apiUrl}locais/${id}`);
+    return this.httpClient.get<Local>(`${environment.apiUrl}local/${id}`);
   }
 
   findAll(): Observable<Local[]>{
-    return this.httpClient.get<Local[]>(`${environment.apiUrl}locais`);
+    return this.httpClient.get<Local[]>(`${environment.apiUrl}local`);
   }
 
   delete(id : number): Observable<void>{
-    return this.httpClient.delete<void>(`${environment.apiUrl}locais/${id}`);
+    return this.httpClient.delete<void>(`${environment.apiUrl}local/${id}`);
   }
 }

@@ -27,8 +27,8 @@
 
           <p> {{evento.descricao}} </p>
           <p><strong>Data: </strong> {{evento.data_hora | date:'dd/MM/yyyy HH:mm'}}</p>
-          <p><strong>Local: </strong> {{getLocalEvento(evento.local).nome}}</p>
-          <p><strong>Parceiro: </strong> {{getParceiroEvento(evento.parceiro).nomeFantasia}}</p>
+          <p><strong>Local: </strong> {{evento.local.nome}}</p>
+          <p><strong>Parceiro: </strong> {{evento.parceiro.nomeFantasia}}</p>
           <p><strong>Classificação indicativa: </strong> {{evento.classificacao | classificacaoIndicativa}}</p>
 
           <ion-item>
